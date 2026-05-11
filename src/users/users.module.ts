@@ -16,9 +16,7 @@ const JWT_EXPIRATION: number | StringValue =
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
-      secret:
-        process.env.JWT_SECRET ||
-        'your_super_secret_jwt_key_change_this_in_production',
+      secret: process.env.JWT_SECRET,
       signOptions: {
         expiresIn: JWT_EXPIRATION,
       },
