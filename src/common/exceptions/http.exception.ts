@@ -4,7 +4,10 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class CustomHttpException extends HttpException {
-  constructor(message: string, statusCode: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR) {
+  constructor(
+    message: string,
+    statusCode: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
+  ) {
     super(
       {
         success: false,

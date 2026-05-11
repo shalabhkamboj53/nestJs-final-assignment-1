@@ -4,16 +4,18 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 
-// Extend Express Request to include user property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: Record<string, unknown>;
   }
 }
 
-export const CurrentUser = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest<Request>();
-  return request.user;
-});
+export const CurrentUser = createParamDecorator(
+  (
+    _data: unknown,
+    ctx: ExecutionContext,
+  ): Record<string, unknown> | undefined => {
+    const request = ctx.switchToHttp().getRequest<Request>();
+    return request.user;
+  },
+);

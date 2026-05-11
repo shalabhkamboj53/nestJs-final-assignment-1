@@ -12,10 +12,8 @@ import { Request } from 'express';
 
 // Extend Express Request to include user property
 declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
-    }
+  interface Request {
+    user?: any;
   }
 }
 
@@ -40,11 +38,12 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       // Verify and decode the JWT token
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload =
+        await this.jwtService.verifyAsync<Record<string, any>>(token);
       // Attach the decoded payload to the request object for later use
       request.user = payload;
       return true;
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('Invalid or expired token');
     }
   }

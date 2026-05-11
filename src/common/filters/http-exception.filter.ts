@@ -7,7 +7,6 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  BadRequestException,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -20,21 +19,27 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const exceptionResponse = exception.getResponse();
 
     // Handle validation errors from BadRequestException
-    let errorMessage = 'Internal Server Error';
-    let errors = undefined;
+    let errorMessage: string;
+    let errors: unknown = undefined;
 
     if (
       status === HttpStatus.BAD_REQUEST &&
       typeof exceptionResponse === 'object'
     ) {
-      const responseObject = exceptionResponse as any;
+      const responseObject = exceptionResponse as Record<string, unknown>;
       errors = responseObject.message;
       errorMessage = 'Validation failed';
-    } else if (typeof exceptionResponse === 'object') {
-      const responseObject = exceptionResponse as any;
-      errorMessage = responseObject.message || 'An error occurred';
+    } else if (
+      typeof exceptionResponse === 'object' &&
+      exceptionResponse !== null
+    ) {
+      const responseObject = exceptionResponse as Record<string, unknown>;
+      errorMessage =
+        typeof responseObject.message === 'string'
+          ? responseObject.message
+          : 'An error occurred';
     } else {
-      errorMessage = exceptionResponse as string;
+      errorMessage = String(exceptionResponse);
     }
 
     // Send standardized error response

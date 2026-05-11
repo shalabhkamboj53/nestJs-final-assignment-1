@@ -10,15 +10,6 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
-// Extend Express Request to include user property
-declare global {
-  namespace Express {
-    interface Request {
-      user?: any;
-    }
-  }
-}
-
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -35,8 +26,10 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<Request>();
-    const user = request.user as any;
+    const request = context
+      .switchToHttp()
+      .getRequest<Request & { user?: { role?: string } }>();
+    const user = request.user as { role?: string } | undefined;
 
     // Check if user exists and has the required role
     if (!user || !user.role) {

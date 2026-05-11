@@ -11,25 +11,25 @@ export class User {
   _id?: Types.ObjectId;
 
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true, unique: true, lowercase: true })
-  email: string;
+  email!: string;
 
   @Prop({ required: true })
-  password: string;
+  password!: string;
 
   @Prop({ required: true, enum: ['user', 'admin'], default: 'user' })
-  role: string;
+  role!: string;
 
   @Prop({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @Prop()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Prop()
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 
 // Create the User schema from the User class

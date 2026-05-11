@@ -1,7 +1,7 @@
 // src/users/dtos/update-user.dto.ts
 // DTO for updating user information
 
-import { IsEmail, IsString, MinLength, IsOptional, IsEnum } from 'class-validator';
+import { IsEmail, IsString, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {

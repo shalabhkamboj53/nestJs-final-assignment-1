@@ -28,6 +28,11 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
+type RequestUser = {
+  sub: string;
+  role?: string;
+};
+
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
@@ -76,7 +81,7 @@ export class UsersController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async getProfile(@CurrentUser() user: any): Promise<UserResponseDto> {
+  async getProfile(@CurrentUser() user: RequestUser): Promise<UserResponseDto> {
     return this.usersService.findById(user.sub);
   }
 
@@ -93,7 +98,7 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   async findById(
     @Param('id') id: string,
-    @CurrentUser() currentUser: any,
+    @CurrentUser() currentUser: RequestUser,
   ): Promise<UserResponseDto> {
     // Users can only view their own profile, admins can view any
     if (currentUser.role !== 'admin' && currentUser.sub !== id) {
@@ -116,7 +121,7 @@ export class UsersController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @CurrentUser() currentUser: any,
+    @CurrentUser() currentUser: RequestUser,
   ): Promise<UserResponseDto> {
     // Users can only update their own profile, admins can update any
     if (currentUser.role !== 'admin' && currentUser.sub !== id) {

@@ -20,9 +20,10 @@ export class UsersService {
 
   // Helper method to format user response (exclude password)
   private formatUserResponse(user: UserDocument): UserResponseDto {
-    const userObj = user.toObject() as any;
-    const { password, ...rest } = userObj;
-    return rest as UserResponseDto;
+    const userObj = user.toObject<Record<string, unknown>>();
+    delete userObj.password;
+    const rest = userObj;
+    return rest as unknown as UserResponseDto;
   }
 
   // Create a new user (used by admin)

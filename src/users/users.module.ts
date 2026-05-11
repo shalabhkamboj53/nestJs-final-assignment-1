@@ -4,11 +4,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
+import type { StringValue } from 'ms';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './schemas/user.schema';
 
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '24h';
+const JWT_EXPIRATION: number | StringValue =
+  (process.env.JWT_EXPIRATION as StringValue | undefined) || '24h';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '24h';
         'your_super_secret_jwt_key_change_this_in_production',
       signOptions: {
         expiresIn: JWT_EXPIRATION,
-      } as any,
+      },
     }),
   ],
   providers: [UsersService],

@@ -25,7 +25,9 @@ async function bootstrap() {
   // Setup Swagger API documentation
   const config = new DocumentBuilder()
     .setTitle('NestJS Backend API')
-    .setDescription('A beginner-friendly NestJS backend with JWT authentication and role-based access control')
+    .setDescription(
+      'A beginner-friendly NestJS backend with JWT authentication and role-based access control',
+    )
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -44,6 +46,8 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`🚀 Application is running on: http://localhost:${port}`);
-  console.log(`📚 Swagger documentation available at: http://localhost:${port}/api`);
+  console.log(
+    `📚 Swagger documentation available at: http://localhost:${port}/api`,
+  );
 }
 bootstrap();
